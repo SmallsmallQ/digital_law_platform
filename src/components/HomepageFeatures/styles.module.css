@@ -1,0 +1,23 @@
+.features {
+  display: flex;
+  align-items: center;
+  padding: 3rem 0 2rem;
+  width: 100%;
+}
+
+.sectionHeader {
+  max-width: 860px;
+  margin: 0 auto 2rem;
+  text-align: center;
+}
+
+.card {
+  height: 100%;
+  border: 1px solid var(--ifm-toc-border-color);
+  border-radius: 12px;
+  background: var(--ifm-background-surface-color);
+}
+
+.updates {
+  padding: 1rem 0 3rem;
+}
