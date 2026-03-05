@@ -64,7 +64,7 @@ export default function HomepageFeatures(): ReactNode {
           <div className={styles.sectionHeader}>
             <Heading as="h2">平台定位</Heading>
             <p>
-              lawstudy.wiki 是面向中文用户的开放知识平台，致力于系统整理和连接数字社会中的法律问题，构建可检索、可引用、可持续增长的数字法治知识库。
+              数字法治知识平台是面向中文用户的开放知识平台，致力于系统整理和连接数字社会中的法律问题，构建可检索、可引用、可持续增长的数字法治知识库。
             </p>
           </div>
           <div className="row">
@@ -84,7 +84,7 @@ export default function HomepageFeatures(): ReactNode {
                 <div className="padding-horiz--md padding-vert--md">
                   <Heading as="h4">近期更新</Heading>
                   <p>查看最新发布的研究条目、案例整理与法规观察。</p>
-                  <Link to="/blog">进入更新页面</Link>
+                  <Link to="/docs/practice/regulation-updates/">查看监管动态</Link>
                 </div>
               </div>
             </div>

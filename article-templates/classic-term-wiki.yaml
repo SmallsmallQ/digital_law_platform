@@ -1,0 +1,46 @@
+# 经典理论（名词）Wiki 模板
+output: docs/theory/glossary/new-term.md
+
+frontMatter:
+  slug: /theory/glossary/new-term
+  sidebar_position: 20
+
+title: 术语名称（中英文）
+
+meta:
+  所属领域: 经典理论（名词）
+  版本: v1.0
+  最后更新: 2026-03-05
+
+abstract: >-
+  用 2-4 句话说明该术语是什么、为何重要。
+
+keywords:
+  - 术语
+  - 数字法学
+  - 理论
+
+toc:
+  - 一、定义
+  - 二、规范基础
+  - 三、争议焦点
+  - 四、相关概念
+  - 五、参考资料
+
+sections:
+  - heading: 一、定义
+    body: |
+      给出简明定义，并说明适用语境。
+  - heading: 二、规范基础
+    body: |
+      列出相关法律规范、政策或理论来源。
+  - heading: 三、争议焦点
+    body: |
+      说明不同观点及其分歧。
+  - heading: 四、相关概念
+    body: |
+      关联近义/对比概念，建议使用列表。
+  - heading: 五、参考资料
+    body: |
+      - 文献1
+      - 文献2

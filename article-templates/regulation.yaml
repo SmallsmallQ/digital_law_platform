@@ -1,0 +1,46 @@
+# 法规模板（法规解读）
+output: docs/practice/law-system/new-regulation.md
+
+frontMatter:
+  slug: /practice/law-system/new-regulation
+  sidebar_position: 20
+
+title: 法规名称（解读）
+
+meta:
+  发布机关: 待补充
+  生效日期: 待补充
+  法规层级: 法律 / 行政法规 / 部门规章
+  适用范围: 待补充
+
+abstract: >-
+  概括法规核心目标、调整对象和制度变化。
+
+keywords:
+  - 法规解读
+  - 合规
+  - 数字法治
+
+toc:
+  - 一、出台背景
+  - 二、核心条款
+  - 三、合规要点
+  - 四、实务影响
+  - 五、实施建议
+
+sections:
+  - heading: 一、出台背景
+    body: |
+      概述政策背景与治理目标。
+  - heading: 二、核心条款
+    body: |
+      按条款分点提炼关键规则。
+  - heading: 三、合规要点
+    body: |
+      列出主体义务、风险点、红线条款。
+  - heading: 四、实务影响
+    body: |
+      对企业、平台、监管、司法的影响。
+  - heading: 五、实施建议
+    body: |
+      给出可执行的合规动作清单。

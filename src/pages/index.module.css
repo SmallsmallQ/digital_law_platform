@@ -21,3 +21,9 @@
   align-items: center;
   justify-content: center;
 }
+
+.homepageTitle {
+  font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', 'STSong',
+    'SimSun', serif;
+  font-weight: 700;
+}

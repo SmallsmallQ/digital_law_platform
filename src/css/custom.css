@@ -4,7 +4,7 @@
  * work well for content-centric websites.
  */
 
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;700;900&display=swap');
 
 /* You can override the default Infima variables here. */
 :root {
@@ -16,10 +16,10 @@
   --ifm-color-primary-lighter: #359962;
   --ifm-color-primary-lightest: #3cad6e;
   --ifm-code-font-size: 95%;
-  --ifm-font-family-base: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC',
-    'STSong', 'SimSun', serif;
-  --ifm-heading-font-family: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC',
-    'STSong', 'SimSun', serif;
+  --ifm-font-family-base: 'Source Han Sans SC', 'Noto Sans SC',
+    'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  --ifm-heading-font-family: 'Source Han Sans SC', 'Noto Sans SC',
+    'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 }
 
@@ -36,7 +36,7 @@
 }
 
 body {
-  font-weight: 500;
+  font-weight: 400;
 }
 
 h1,
@@ -45,10 +45,102 @@ h3,
 h4,
 h5,
 h6 {
-  font-weight: 700;
+  font-weight: 500;
 }
 
 strong,
 b {
-  font-weight: 800;
+  font-weight: 700;
+}
+
+.navbar__title {
+  font-weight: 700;
+}
+
+.markdown {
+  font-size: 1rem;
+  line-height: 1.85;
+  letter-spacing: 0.01em;
+}
+
+.markdown p,
+.markdown ul,
+.markdown ol,
+.markdown blockquote,
+.markdown table,
+.markdown .admonition {
+  margin-bottom: 1rem;
+}
+
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.markdown h4 {
+  line-height: 1.45;
+  margin-top: 2rem;
+  margin-bottom: 0.9rem;
+  font-weight: 500;
+}
+
+.markdown h1 {
+  font-size: clamp(2rem, 3.2vw, 2.6rem);
+}
+
+.markdown h2 {
+  font-size: clamp(1.55rem, 2.5vw, 2rem);
+}
+
+.markdown h3 {
+  font-size: clamp(1.28rem, 1.9vw, 1.55rem);
+}
+
+.markdown li {
+  margin: 0.35rem 0;
+}
+
+.markdown li > p {
+  margin-bottom: 0.45rem;
+}
+
+.markdown blockquote {
+  border-left: 4px solid var(--ifm-color-primary);
+  padding: 0.7rem 1rem;
+  background: var(--ifm-code-background);
+}
+
+.markdown table {
+  display: table;
+  width: 100%;
+}
+
+.markdown th,
+.markdown td {
+  vertical-align: top;
+}
+
+.markdown :not(pre) > code {
+  font-size: 0.92em;
+  padding: 0.18rem 0.36rem;
+  border-radius: 0.3rem;
+}
+
+.markdown pre code {
+  font-size: 0.92rem;
+  line-height: 1.75;
+}
+
+.markdown .katex-display {
+  margin: 1.3rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+@media (min-width: 1200px) {
+  .docs-wrapper .container {
+    max-width: 1500px;
+  }
+
+  .theme-doc-markdown {
+    max-width: none;
+  }
 }

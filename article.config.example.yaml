@@ -1,0 +1,38 @@
+# 文章生成配置示例（建议通过模板命令生成）
+# npm run article:new -- --init article.config.yaml --template article
+output: docs/theory/classic-literature/digital/my-article.md
+
+frontMatter:
+  slug: /theory/classic-literature/my-article
+  sidebar_position: 10
+
+title: 示例文章标题
+
+meta:
+  发表信息: 发表于《期刊名称》2026年第1期
+  引用数据: 当前被引0次
+  作者: 张三
+  文章下载链接: 待补充
+
+abstract: >-
+  这里填写摘要。
+
+keywords:
+  - 数字法学
+  - 数据治理
+
+toc:
+  - 一、问题的提出
+  - 二、核心观点
+  - 结语
+
+sections:
+  - heading: 一、问题的提出
+    body: |
+      这里填写正文第一部分。
+  - heading: 二、核心观点
+    body: |
+      这里填写正文第二部分。
+  - heading: 结语
+    body: |
+      这里填写结语。

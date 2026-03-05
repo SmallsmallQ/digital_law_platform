@@ -1,12 +1,14 @@
 import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-  title: 'lawstudy.wiki',
-  tagline: '数字法治平台：连接理论研究、法律实践与技术交叉议题',
+  title: '数字法治知识平台',
+  tagline: '连接理论研究、法律实践与技术交叉议题',
   favicon: 'img/favicon.ico',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
@@ -22,7 +24,7 @@ const config: Config = {
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'lawstudy-wiki',
+  organizationName: 'SmallsmallQ',
   projectName: 'digital_law_platform',
 
   onBrokenLinks: 'throw',
@@ -41,22 +43,12 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
+          remarkPlugins: [remarkMath],
+          rehypePlugins: [rehypeKatex],
           editUrl:
-            'https://github.com/lawstudy-wiki/digital_law_platform/edit/main/',
+            'https://github.com/SmallsmallQ/digital_law_platform/edit/main/',
         },
-        blog: {
-          showReadingTime: true,
-          feedOptions: {
-            type: ['rss', 'atom'],
-            xslt: true,
-          },
-          editUrl:
-            'https://github.com/lawstudy-wiki/digital_law_platform/edit/main/',
-          // Useful options to enforce blogging best practices
-          onInlineTags: 'warn',
-          onInlineAuthors: 'warn',
-          onUntruncatedBlogPosts: 'warn',
-        },
+        blog: false,
         theme: {
           customCss: './src/css/custom.css',
         },
@@ -70,9 +62,9 @@ const config: Config = {
       respectPrefersColorScheme: true,
     },
     navbar: {
-      title: 'lawstudy.wiki',
+      title: '数字法治知识平台',
       logo: {
-        alt: 'lawstudy.wiki Logo',
+        alt: '数字法治知识平台 Logo',
         src: 'img/logo.svg',
       },
       items: [
@@ -100,9 +92,19 @@ const config: Config = {
           position: 'left',
           label: '技术交叉',
         },
-        {to: '/blog', label: '更新', position: 'left'},
         {
-          href: 'https://github.com/lawstudy-wiki/digital_law_platform',
+          type: 'docSidebar',
+          sidebarId: 'authoritySidebar',
+          position: 'left',
+          label: '权威动态',
+        },
+        {
+          to: '/article-builder',
+          position: 'left',
+          label: '写作工具',
+        },
+        {
+          href: 'https://github.com/SmallsmallQ/digital_law_platform',
           label: 'GitHub',
           position: 'right',
         },
@@ -130,6 +132,10 @@ const config: Config = {
               label: '技术交叉',
               to: '/docs/technology/',
             },
+            {
+              label: '权威动态',
+              to: '/docs/authority/',
+            },
           ],
         },
         {
@@ -140,8 +146,8 @@ const config: Config = {
               to: '/docs/intro',
             },
             {
-              label: '更新日志',
-              to: '/blog',
+              label: '平台结构',
+              to: '/docs/intro#网站整体结构',
             },
           ],
         },
@@ -149,23 +155,32 @@ const config: Config = {
           title: '更多',
           items: [
             {
-              label: '更新',
-              to: '/blog',
+              label: '理论研究',
+              to: '/docs/theory/',
             },
             {
               label: 'GitHub',
-              href: 'https://github.com/lawstudy-wiki/digital_law_platform',
+              href: 'https://github.com/SmallsmallQ/digital_law_platform',
             },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} lawstudy.wiki. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} 数字法治知识平台. Built with Docusaurus.`,
     },
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
     },
   } satisfies Preset.ThemeConfig,
+  stylesheets: [
+    {
+      href: 'https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css',
+      type: 'text/css',
+      integrity:
+        'sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP',
+      crossorigin: 'anonymous',
+    },
+  ],
 };
 
 export default config;

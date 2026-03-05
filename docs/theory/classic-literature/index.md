@@ -9,3 +9,4 @@ sidebar_position: 1
 ## 已收录
 
 - [平台治理研究综述（示例）](./platform-governance-review)
+- [数字法学：定位、范畴与方法——兼论面向数智未来的法学教育](/docs/theory/classic-literature/digital-law-1)

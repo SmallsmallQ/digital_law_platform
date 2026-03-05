@@ -1,0 +1,47 @@
+# 文章分享模板
+output: docs/theory/classic-literature/shares/new-share.md
+
+frontMatter:
+  slug: /theory/classic-literature/share-new
+  sidebar_position: 20
+
+title: 文章标题（分享）
+
+meta:
+  来源: 期刊/公众号/会议
+  作者: 待补充
+  年份: 2026
+  链接: 待补充
+
+abstract: >-
+  用 3-5 句话说明本文核心观点与价值。
+
+keywords:
+  - 文章分享
+  - 理论研究
+  - 数字法治
+
+toc:
+  - 一、文章概览
+  - 二、核心观点提炼
+  - 三、方法与证据
+  - 四、启发与批评
+  - 五、延伸阅读
+
+sections:
+  - heading: 一、文章概览
+    body: |
+      介绍研究问题、研究对象与主要结论。
+  - heading: 二、核心观点提炼
+    body: |
+      以要点列表提炼关键论点。
+  - heading: 三、方法与证据
+    body: |
+      说明作者使用的方法、数据和论证路径。
+  - heading: 四、启发与批评
+    body: |
+      写你对本文的评价与可改进之处。
+  - heading: 五、延伸阅读
+    body: |
+      - 推荐文献1
+      - 推荐文献2
