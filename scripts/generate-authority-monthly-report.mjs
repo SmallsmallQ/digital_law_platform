@@ -48,19 +48,6 @@ async function fetchText(url) {
   return response.text();
 }
 
-async function fetchBytes(url) {
-  const response = await fetch(url, {
-    headers: {
-      'User-Agent': 'digital-law-platform-monthly-bot/1.0',
-    },
-  });
-  if (!response.ok) {
-    throw new Error(`抓取失败: ${url} (${response.status})`);
-  }
-  const arrayBuffer = await response.arrayBuffer();
-  return Buffer.from(arrayBuffer);
-}
-
 async function fetchCssnPages() {
   const urls = [
     'https://www.cssn.cn/fx/szfx/',
@@ -72,58 +59,15 @@ async function fetchCssnPages() {
   const pages = await Promise.all(
     urls.map(async (url) => {
       try {
-        return await fetchText(url);
+        const html = await fetchText(url);
+        return {url, html};
       } catch {
-        return '';
+        return null;
       }
     }),
   );
 
-  return pages.filter(Boolean).join('\n');
-}
-
-function extractCssnArticleLinks(html, month) {
-  const compactMonth = month.replace('-', '');
-  const tailRegex = /(\d{6}\/t\d+_\d+\.shtml)/g;
-  const seen = new Set();
-  const links = [];
-  let matched = tailRegex.exec(html);
-
-  while (matched) {
-    const tail = matched[1];
-    if (!tail.startsWith(compactMonth)) {
-      matched = tailRegex.exec(html);
-      continue;
-    }
-
-    const url = `https://www.cssn.cn/fx/szfx/${tail}`;
-    if (!seen.has(url)) {
-      seen.add(url);
-      links.push(url);
-    }
-    matched = tailRegex.exec(html);
-  }
-
-  return links.slice(0, 8);
-}
-
-function decodeUtf8(bytes) {
-  return bytes.toString('utf8');
-}
-
-function extractTitleFromArticle(html) {
-  const h1 = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i)?.[1];
-  if (h1) {
-    return stripHtml(h1);
-  }
-  const title = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1];
-  if (!title) return '';
-  return stripHtml(title).replace(/[-_|｜].*$/, '').trim();
-}
-
-function extractDateFromArticle(html) {
-  const date = html.match(/(\d{4}-\d{2}-\d{2})/);
-  return date?.[1] || '';
+  return pages.filter(Boolean);
 }
 
 function stripHtml(text) {
@@ -134,51 +78,52 @@ function stripHtml(text) {
     .trim();
 }
 
-function extractCssnItems(html, month) {
-  const regex = /<a[^>]*href=['"]([^'"]*\/fx\/[^'"]*t\d+_\d+\.shtml)['"][^>]*>(.*?)<\/a>/g;
-  const result = [];
-  const seen = new Set();
-  let matched = regex.exec(html);
-
-  while (matched) {
-    const href = matched[1];
-    const title = stripHtml(matched[2]);
-    const nearby = html.slice(matched.index, matched.index + 900);
-    const dateMatch = nearby.match(/(\d{4}-\d{2}-\d{2})/);
-    const date = dateMatch?.[1] || '';
-    if (date && date.startsWith(month)) {
-      const link = href.startsWith('http') ? href : `https://www.cssn.cn${href}`;
-      const key = `${title}|${link}|${date}`;
-      if (!seen.has(key) && title) {
-        seen.add(key);
-        result.push({title, link, date});
-      }
-    }
-    matched = regex.exec(html);
-  }
-
-  return result.slice(0, 8);
+function normalizeTitle(title) {
+  return stripHtml(title).replace(/\s+/g, ' ').trim();
 }
 
-async function collectCssnItems(month) {
-  const pagesHtml = await fetchCssnPages();
-  const links = extractCssnArticleLinks(pagesHtml, month);
+function extractCssnItems(pages, month) {
+  const monthToken = month.replace('-', '');
+  const itemRegex = /<a[^>]*href=['"]([^'"]*t\d+_\d+\.shtml)['"][^>]*>([\s\S]*?)<\/a>[\s\S]{0,1000}?(\d{4}-\d{2}-\d{2})/gi;
+  const result = [];
+  const seen = new Set();
 
-  const items = [];
-  for (const link of links) {
-    try {
-      const bytes = await fetchBytes(link);
-      const html = decodeUtf8(bytes);
-      const title = extractTitleFromArticle(html);
-      const date = extractDateFromArticle(html) || `${month}-01`;
-      if (!title) continue;
-      items.push({title, link, date});
-    } catch {
-      // 单条失败时跳过，保持整体任务可用
+  pages.forEach((page) => {
+    const {url: baseUrl, html} = page;
+    let matched = itemRegex.exec(html);
+
+    while (matched) {
+      const rawHref = matched[1].trim();
+      const title = normalizeTitle(matched[2]);
+      const date = matched[3];
+
+      let link = '';
+      try {
+        link = new URL(rawHref, baseUrl).toString();
+      } catch {
+        matched = itemRegex.exec(html);
+        continue;
+      }
+
+      const pathname = new URL(link).pathname;
+      const inLawChannel = pathname.startsWith('/fx/');
+      const inMonth = pathname.includes(`/${monthToken}/`);
+
+      if (inLawChannel && inMonth && title) {
+        const key = `${title}|${link}`;
+        if (!seen.has(key)) {
+          seen.add(key);
+          result.push({title, link, date});
+        }
+      }
+
+      matched = itemRegex.exec(html);
     }
-  }
 
-  return items.slice(0, 8);
+    itemRegex.lastIndex = 0;
+  });
+
+  return result.slice(0, 8);
 }
 
 function buildMarkdown(month, cssnItems) {
@@ -189,7 +134,16 @@ function buildMarkdown(month, cssnItems) {
     ? cssnItems
         .map((item, index) => {
           const number = index + 1;
-          return [`### ${number}. ${item.title}`, '', `- 来源机构：中国社会科学网（法学频道）`, `- 发布时间：${item.date}`, `- 原文链接：${item.link}`, `- 观察要点：`, `  - （待补充）请根据原文提炼2-3条核心观点。`, ''].join('\n');
+          return [
+            `### ${number}. ${item.title}`,
+            '',
+            `- 来源机构：中国社会科学网（法学频道）`,
+            `- 发布时间：${item.date}`,
+            `- 原文链接：${item.link}`,
+            `- 观察要点：`,
+            `  - （待补充）请根据原文提炼2-3条核心观点。`,
+            '',
+          ].join('\n');
         })
         .join('\n')
     : '本月暂未自动抓取到中国社科网符合条件条目，请手动补充。\n';
@@ -249,13 +203,13 @@ async function updateAuthorityIndex(month) {
     return;
   }
 
-  const marker = '## 更新频率';
-  if (!file.includes(marker)) {
+  if (file.includes('## 月报列表')) {
+    const updated = file.replace('## 月报列表', `## 月报列表\n\n${reportLink}`);
+    await writeFile(indexPath, updated, 'utf8');
     return;
   }
 
-  const appendBlock = `\n## 月报列表\n\n${reportLink}\n`;
-  const updated = `${file}${appendBlock}`;
+  const updated = `${file}\n\n## 月报列表\n\n${reportLink}\n`;
   await writeFile(indexPath, updated, 'utf8');
 }
 
@@ -265,8 +219,6 @@ async function main() {
   validateMonth(month);
 
   await mkdir(docsDir, {recursive: true});
-
-  const cssnItems = await collectCssnItems(month);
 
   const outputPath = path.join(docsDir, `authority-brief-${month}.md`);
   if (!args.force) {
@@ -279,6 +231,9 @@ async function main() {
       // 文件不存在，继续生成
     }
   }
+
+  const cssnPages = await fetchCssnPages();
+  const cssnItems = extractCssnItems(cssnPages, month);
 
   const markdown = buildMarkdown(month, cssnItems);
   await writeFile(outputPath, markdown, 'utf8');
