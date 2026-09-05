@@ -20,6 +20,8 @@ sidebar_position: 1
 
 ## 月报列表
 
+- [2026-08 月报](./authority-brief-2026-08.md)
+
 - [2026-02 月报](./authority-brief-2026-02.md)
 
 ## 月报列表
